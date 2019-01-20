@@ -1,0 +1,58 @@
+.extracted-so-answer {
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 0 -20px;
+    box-sizing: border-box;
+    margin-bottom: 26px;
+}
+
+.extracted-so-answer li{
+    margin-left: 1em;
+}
+
+.extracted-so-answer code {
+    background-color: #eff0f1;
+    display: inline-block;
+    padding: 4px;
+    margin: -4px 0;
+    max-width: 100%;
+    overflow: scroll;
+}
+
+.extracted-so-answer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.extracted-so-answer__header h3{
+    display: flex;
+    align-items: center;
+}
+.extracted-so-answer__controls a.disabled {
+    opacity: .3;
+    pointer-events: none;
+}
+.extracted-so-answer__controls a {
+    text-decoration: none;
+    position: relative;
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+}
+.extracted-so-answer__controls a::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    transform: scale(0);
+    transition: transform .2s ease;
+    background-color: lightgray;
+    z-index: -1;
+    border-radius: 50%;
+}
+.extracted-so-answer__controls a:hover::before {
+    transform: scale(1);
+}
