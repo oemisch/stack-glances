@@ -1,6 +1,6 @@
  {
      "author": "Alexander Oemisch",
-     "version": "0.22",
+     "version": "0.23",
      "manifest_version": 2,
      "name": "Stack Overflow Preview",
      "description": "Load and display the best results to your developer questions in your google search.",

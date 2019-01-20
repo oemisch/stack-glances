@@ -1,5 +1,6 @@
 // use mocks for debugging, Stack Overflow has a quota limit of 300 requests per day without registration
 const useMock = false;
+
 let foundResult = false;
 const answerNum = 5;
 let answers;
@@ -42,8 +43,8 @@ function showAnswer(index = -1) {
     // const container = document.querySelector('.appbar'); // use to show results in left list
     const container = document.getElementById('rhs_block');
     if (container) {
-        if(container.querySelector('.extracted-so-answer')) {
-            container.querySelector('.extracted-so-answer').remove();
+        if(container.querySelector('.extracted-so-answer__wrapper')) {
+            container.querySelector('.extracted-so-answer__wrapper').remove();
         }
         container.prepend(resultBox);
 
