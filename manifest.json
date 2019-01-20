@@ -18,5 +18,8 @@
      "permissions": [
          "https://api.stackexchange.com/*",
          "storage"
-     ]
+     ],
+     "web_accessible_resources": [
+        "copy.png"
+      ]
  }

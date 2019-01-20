@@ -2,22 +2,55 @@
     border: 1px solid lightgray;
     border-radius: 8px;
     padding: 16px;
-    margin: 0 -20px;
+    /* margin: 0 -20px; */
+    margin: 6px 0px 16px 1px;
     box-sizing: border-box;
     margin-bottom: 26px;
+    font-size: 16px;
+    width: 632px;
+    line-height: 1.5;
 }
 
 .extracted-so-answer li{
     margin-left: 1em;
 }
-
+.extracted-so-answer pre {
+    position: relative;
+}
+.extracted-so-answer pre code {
+    width: calc(100% - 16px);
+    padding: 8px;
+    overflow: scroll;
+}
+.extracted-so-answer pre code::before{
+    display: none;
+}
 .extracted-so-answer code {
+    cursor: pointer;
     background-color: #eff0f1;
     display: inline-block;
-    padding: 4px;
-    margin: -4px 0;
     max-width: 100%;
-    overflow: scroll;
+    overflow: visible;
+    margin: -6px 0;
+    position: relative;
+}
+.extracted-so-answer code::before, .extracted-so-answer pre::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -24px;
+    z-index: 2;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity .2s ease;
+    background-image: url(chrome-extension://__MSG_@@extension_id__/copy.png);
+    background-color: #fff;
+    background-size: 24px 24px;
+    height: 24px;
+    width: 24px;
+}
+.extracted-so-answer code:hover::before, .extracted-so-answer pre:hover::before {
+    opacity: 1;
 }
 
 .extracted-so-answer__header {
@@ -28,6 +61,7 @@
 .extracted-so-answer__header h3{
     display: flex;
     align-items: center;
+    font-weight: 600;
 }
 .extracted-so-answer__controls a.disabled {
     opacity: .3;
@@ -55,4 +89,26 @@
 }
 .extracted-so-answer__controls a:hover::before {
     transform: scale(1);
+}
+
+.extracted-so-answer__answer ol > li {
+    list-style-type: decimal;
+}
+.extracted-so-answer__answer h1 {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 1.5em;
+}
+.extracted-so-answer__answer h2 {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 1em;
+}
+.extracted-so-answer__answer h3 {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: .8em;
 }

@@ -1,15 +1,9 @@
 // use mocks for debugging, Stack Overflow has a quota limit of 300 requests per day without registration
-const useMock = true;
+const useMock = false;
 let foundResult = false;
 const answerNum = 5;
 let answers;
 let answerIndex = 0;
-
-const images = {
-    check: chrome.extension.getURL("icons/check.svg"),
-    left: chrome.extension.getURL("icons/left.svg"),
-    right: chrome.extension.getURL("icons/right.svg")
-};
 
 document.querySelectorAll('#search .g').forEach(result => {
     if (!foundResult && result.textContent.indexOf('stackoverflow') !== -1) {
@@ -44,12 +38,20 @@ function showAnswer(index = -1) {
     const answer = answers[answerIndex];
 
     const resultBox = template(answer);
-    const appBar = document.querySelector('.appbar');
+    // const container = document.querySelector('.appbar'); // use to show results in left list
+    const container = document.getElementById('rhs_block');
+    if (container) {
+        if(container.querySelector('.extracted-so-answer')) {
+            container.querySelector('.extracted-so-answer').remove();
+        }
+        container.prepend(resultBox);
 
-    if(document.querySelector('#topstuff .extracted-so-answer')) {
-        document.querySelector('#topstuff .extracted-so-answer').remove();
+        container.querySelectorAll('code').forEach(code => {
+            code.addEventListener('click', e => {
+                copyToClipboard(code.textContent);
+            });
+        });
     }
-    document.getElementById('topstuff').appendChild(resultBox);
 }
 
 function template(answer) {
@@ -60,6 +62,9 @@ function template(answer) {
             <h3>
                 ${answer.is_accepted ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="margin-right: 8px;" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="green" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
                 Response from Stack Overflow (${answer.score} upvotes)
+                <a href="${answer.link}" style='margin-left: 8px; display: inherit;'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
             </h3>
             <div class="extracted-so-answer__controls">
                 <a href="#" onclick="showAnswer(answerIndex - 1)" class="${answerIndex === 0 ? 'disabled' : ''}">
@@ -73,8 +78,27 @@ function template(answer) {
         <div class="extracted-so-answer__answer">
             ${answer.body}
         </div>
-        <a href="${answer.link}">Open Answer</a>
     `;
     container.innerHTML = template;
     return container;
 }
+
+const copyToClipboard = str => {
+    const el = document.createElement('textarea'); 
+    el.value = str;                                
+    el.setAttribute('readonly', '');               
+    el.style.position = 'absolute';                 
+    el.style.left = '-9999px';                     
+    document.body.appendChild(el);                 
+    const selected =            
+      document.getSelection().rangeCount > 0       
+        ? document.getSelection().getRangeAt(0)    
+        : false;                                   
+    el.select();                                   
+    document.execCommand('copy');                  
+    document.body.removeChild(el);                 
+    if (selected) {                                
+      document.getSelection().removeAllRanges();   
+      document.getSelection().addRange(selected);  
+    }
+  };
