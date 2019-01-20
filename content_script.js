@@ -1,12 +1,13 @@
 // use mocks for debugging, Stack Overflow has a quota limit of 300 requests per day without registration
-const useMock = false;
+const useMock = true;
 let foundResult = false;
 const answerNum = 5;
 let answers;
 let answerIndex = 0;
+const logoUrl = chrome.extension.getURL('logo.png');
 
 document.querySelectorAll('#search .g').forEach(result => {
-    if (!foundResult && result.textContent.indexOf('stackoverflow') !== -1) {
+    if (!foundResult && result.textContent.indexOf('stackoverflow') !== -1 && result.querySelector('.r a').getAttribute('href')) {
         foundResult = true;
         const question_id = /\b(?:\/questions\/)([0-9]+)(?:\/)/g.exec(result.querySelector('.r a').getAttribute('href'))[1];
         console.log('Found result with question id:', question_id);
@@ -56,27 +57,32 @@ function showAnswer(index = -1) {
 
 function template(answer) {
     const container = document.createElement('div');
-    container.classList.add('extracted-so-answer');
+    container.classList.add('extracted-so-answer__wrapper');
     const template = /*html*/`
-        <div class="extracted-so-answer__header">
-            <h3>
-                ${answer.is_accepted ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="margin-right: 8px;" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="green" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
-                Response from Stack Overflow (${answer.score} upvotes)
-                <a href="${answer.link}" style='margin-left: 8px; display: inherit;'>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                </a>
-            </h3>
-            <div class="extracted-so-answer__controls">
-                <a href="#" onclick="showAnswer(answerIndex - 1)" class="${answerIndex === 0 ? 'disabled' : ''}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                </a>
-                <a href="#" onclick="showAnswer(answerIndex + 1)" class="${answers.length <= answerIndex + 1 ? 'disabled' : ''}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                </a>
+        <div class="extracted-so-answer">
+            <div class="extracted-so-answer__header">
+                <h3>
+                    ${answer.is_accepted ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="margin-right: 8px;" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="green" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
+                    Response from Stack Overflow (${answer.score} upvotes)
+                    <a href="${answer.link}" style='margin-left: 8px; display: inherit;'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                    </a>
+                </h3>
+                <div class="extracted-so-answer__controls">
+                    <a href="#" onclick="showAnswer(answerIndex - 1)" class="${answerIndex === 0 ? 'disabled' : ''}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                    </a>
+                    <a href="#" onclick="showAnswer(answerIndex + 1)" class="${answers.length <= answerIndex + 1 ? 'disabled' : ''}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="extracted-so-answer__answer">
+                ${answer.body}
             </div>
         </div>
-        <div class="extracted-so-answer__answer">
-            ${answer.body}
+        <div class="footnote">
+            Presented to you by <a href="https://github.com/oemisch/stackoverflow-preview">Stack Overflow Preview <img src="${logoUrl}" alt="Stack Overflow Preview"></a>
         </div>
     `;
     container.innerHTML = template;

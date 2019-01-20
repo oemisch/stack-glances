@@ -1,3 +1,9 @@
+.extracted-so-answer__wrapper .footnote {
+    text-align: right;
+}
+.extracted-so-answer__wrapper .footnote img{
+    height: 44px;
+}
 .extracted-so-answer {
     border: 1px solid lightgray;
     border-radius: 8px;
