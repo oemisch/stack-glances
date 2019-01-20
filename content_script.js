@@ -1,5 +1,5 @@
 // use mocks for debugging, Stack Overflow has a quota limit of 300 requests per day without registration
-const useMock = true;
+const useMock = false;
 let foundResult = false;
 const answerNum = 5;
 let answers;
