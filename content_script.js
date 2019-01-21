@@ -20,6 +20,7 @@ document.querySelectorAll('#search .g').forEach(result => {
                     showAnswer();
                 })
                 .catch(e => {
+                    // TODO: notify when quota is running out.
                     console.error('Error while loading StackOverflow answers', e);
                 });
         } else {
@@ -83,7 +84,7 @@ function template(answer) {
             </div>
         </div>
         <div class="footnote">
-            Presented to you by <a href="https://github.com/oemisch/stackoverflow-preview">Stack Overflow Preview <img src="${logoUrl}" alt="Stack Overflow Preview"></a>
+            Presented to you by <a href="https://github.com/oemisch/stack-glances">Stack Glances <img src="${logoUrl}" alt="Stack Glances"></a>
         </div>
     `;
     container.innerHTML = template;

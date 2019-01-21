@@ -1,3 +1,6 @@
+.extracted-so-answer__wrapper {
+    margin-bottom: 24px;
+}
 .extracted-so-answer__wrapper .footnote {
     text-align: right;
 }
@@ -11,7 +14,7 @@
     /* margin: 0 -20px; */
     margin: 6px 0px 16px 1px;
     box-sizing: border-box;
-    margin-bottom: 26px;
+    margin-bottom: 8px;
     font-size: 16px;
     width: 632px;
     line-height: 1.5;
